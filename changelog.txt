@@ -1,0 +1,34 @@
+Endless Refined changelog
+=========================
+
+1.0.0
+-----
+First release.
+
+Refined Storage
+ - A portable grid with no storage disk opens, backed by the player's Endless Inventory.
+   Disk behaviour is untouched when a disk is present.
+ - Endless Inventory's attached overlay is kept off the grid screen, which shows the same
+   contents.
+
+Endless Inventory
+ - Passively gained items that land in slots 9-35 are moved to Endless Inventory. Items
+   moved around inside a GUI are not, so shift-clicking cannot be undone behind the
+   player's back.
+ - Items that fit nowhere go to Endless Inventory instead of onto the ground.
+ - Item NBT now survives the trip to the client: three points in Endless Inventory's own
+   encoding dropped it, so icons of enchanted, potioned and other NBT-bearing items were
+   drawn as plain items.
+
+Hotbar
+ - Up to four groups of nine slots, selectable across the extended inventory slots.
+ - Ctrl+1..9 show pages of a table of eighty-one Endless Inventory items.
+ - Ctrl+0 swaps between the player's own inventory and their ender chest, with the ender
+   chest's contents moved back before a death or a logout.
+ - The grave key cycles the layout: one row of groups, two, or one row per group.
+ - A nine by nine panel over container screens, with right-drag to move, shift-click to
+   clear a cell, and shift-click in the Endless Inventory panel to fill one.
+
+Forked from QuadHotbar
+ - The multi-group hotbar is a fork of QuadHotbar, which the two mods cannot share; see
+   THIRD-PARTY.md. Installing both is refused with an explanation.
