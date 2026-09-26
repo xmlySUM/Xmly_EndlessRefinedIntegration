@@ -1,3 +1,24 @@
+# Licence of this repository
+
+This repository is mixed, and which licence applies depends on the file:
+
+| Files | Licence |
+|---|---|
+| Everything not listed below | LGPL-3.0 as part of this mod, and also available under MIT - see `LICENSE` |
+| `src/main/java/com/xmly/endlessrefined/hotbar/engine/` | LGPL-3.0 |
+| `mixin/hotbar/InventoryMixin.java`, `mixin/hotbar/ServerGamePacketListenerImplMixin.java` | LGPL-3.0 |
+
+The LGPL-3.0 files are derived from QuadHotbar and each carries a notice at the top saying so. The
+text of LGPL-3.0 must travel with them: see `COPYING.LESSER` in this repository, downloaded from
+<https://www.gnu.org/licenses/lgpl-3.0.txt>.
+
+This mod is published under LGPL-3.0, because of those files. The parts written for it are also
+offered under MIT, so they may be reused under either. Where a download page offers only one licence
+field, fill in LGPL-3.0. This does not restrict modpacks: LGPL-3.0 permits being included in and
+distributed with one. `LICENSE.txt` is the statement of all of this.
+
+---
+
 # Third-party code
 
 ## QuadHotbar

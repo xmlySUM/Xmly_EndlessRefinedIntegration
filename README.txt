@@ -41,7 +41,7 @@ What it does
    - Ctrl+0 swaps the hotbar between the player's own inventory and their ender chest.
      The ender chest's twenty-seven slots move in and out of the hotbar as they are; a
      death or a logout puts them back where they belong first.
-   - The grave key cycles how the groups are laid out: one row of groups, two rows, or one
+   - The layout key (backslash by default) cycles how the groups are laid out: one row of groups, two rows, or one
      row per group.
    - A nine by nine panel over any container screen shows the whole table. Click the tab to
      open it, right-drag to move it, shift-click a cell to take that item off the hotbar,
@@ -71,3 +71,11 @@ Known limitations
 - Item icons in the Endless Inventory screens keep their NBT; this mod patches three points
   in Endless Inventory's network encoding to make that so. With `debug.traceNbt` enabled the
   log says whether it is working.
+
+Licence
+-------
+LGPL-3.0. The mod contains code derived from QuadHotbar (LGPL-3.0), which is why it is published
+under that licence rather than a more permissive one; the multi-group hotbar engine under
+hotbar/engine and two of the mixins under mixin/hotbar carry a notice in each file saying so. The
+parts written for this mod are also available under MIT. See LICENSE.txt for the full statement,
+THIRD-PARTY.md for the file list, and COPYING.LESSER for the text of LGPL-3.0.
