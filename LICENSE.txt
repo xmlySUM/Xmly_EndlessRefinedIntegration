@@ -1,5 +1,6 @@
-Endless Refined - licence
+                   GNU LESSER GENERAL PUBLIC LICENSE
 =========================
+Endless Refined - licence
 
 This mod is published under the GNU Lesser General Public License v3.0 (LGPL-3.0).
 
