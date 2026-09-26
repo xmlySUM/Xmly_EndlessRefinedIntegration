@@ -3,6 +3,8 @@ loaderVersion="${forge_version_range}"
 
 license="${mod_license}"
 
+issueTrackerURL="https://github.com/xmlySUM/Xmly_EndlessRefinedIntegration"
+
 [[mods]]
 modId="${mod_id}"
 version="${mod_version}"
@@ -26,6 +28,9 @@ NOT COMPATIBLE with the standalone QuadHotbar mod: both patch the same instructi
 only one may be installed.
 '''
 
+displayURL="https://www.curseforge.com/minecraft/mc-mods/endless-inventory-refined-integration"
+logoFile= "icon.png"
+
 [[dependencies.${mod_id}]]
 modId="forge"
 mandatory=true
@@ -43,14 +48,14 @@ side="BOTH"
 [[dependencies.${mod_id}]]
 modId="endless_inventory"
 mandatory=true
-versionRange="[1.1.0,1.2)"
+versionRange="[1.1.0,2)"
 ordering="AFTER"
 side="BOTH"
 
 [[dependencies.${mod_id}]]
 modId="refinedstorage"
 mandatory=false
-versionRange="[1.12.0,1.13)"
+versionRange="[1.12.0,2)"
 ordering="AFTER"
 side="BOTH"
 
