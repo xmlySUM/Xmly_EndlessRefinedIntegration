@@ -30,7 +30,7 @@ public final class HotbarKeys {
         for (int digit = 0; digit <= 9; digit++) {
             int key = digit == 0 ? GLFW.GLFW_KEY_0 : GLFW.GLFW_KEY_1 + digit - 1;
 
-            PAGE_KEYS[digit] = new KeyMapping("key.endless_refined.row_" + digit, KeyConflictContext.IN_GAME, KeyModifier.CONTROL, InputConstants.Type.KEYSYM.getOrCreate(key), "key.categories.endless_refined");
+            PAGE_KEYS[digit] = new KeyMapping("key.xmly_endless_refined.row_" + digit, KeyConflictContext.IN_GAME, KeyModifier.CONTROL, InputConstants.Type.KEYSYM.getOrCreate(key), "key.categories.xmly_endless_refined");
 
             event.register(PAGE_KEYS[digit]);
         }
@@ -93,19 +93,19 @@ public final class HotbarKeys {
             }
 
             if (groups < 2) {
-                HotbarEngineClientEvents.showNotice("endless_refined.notice.no_groups");
+                HotbarEngineClientEvents.showNotice("xmly_endless_refined.notice.no_groups");
                 return;
             }
 
             if (!HotbarEngineClientEvents.canSwitchGroups()) {
-                HotbarEngineClientEvents.showNotice("endless_refined.notice.layout_hides_groups");
+                HotbarEngineClientEvents.showNotice("xmly_endless_refined.notice.layout_hides_groups");
                 return;
             }
 
             int engineGroup = HotbarGroups.engineGroupForDigit(groups, digit);
 
             if (engineGroup <= 0) {
-                HotbarEngineClientEvents.showNotice("endless_refined.notice.no_groups");
+                HotbarEngineClientEvents.showNotice("xmly_endless_refined.notice.no_groups");
                 return;
             }
 

@@ -14,7 +14,7 @@ public class HotbarEngineConfigScreen extends Screen {
     private final Screen parent;
 
     public HotbarEngineConfigScreen(Screen parent) {
-        super(Component.translatable("endless_refined.config.title"));
+        super(Component.translatable("xmly_endless_refined.config.title"));
         this.parent = parent;
     }
 
@@ -56,14 +56,14 @@ public class HotbarEngineConfigScreen extends Screen {
     }
 
     private static Component groupsMessage() {
-        return Component.translatable("endless_refined.config.hotbar_groups", HotbarEngineConfig.hotbarGroups);
+        return Component.translatable("xmly_endless_refined.config.hotbar_groups", HotbarEngineConfig.hotbarGroups);
     }
 
     private static Component wrapMessage() {
         return Component.translatable(
-                "endless_refined.config.wrap_scroll",
+                "xmly_endless_refined.config.wrap_scroll",
                 Component.translatable(HotbarEngineConfig.wrapScroll
-                        ? "endless_refined.config.on"
-                        : "endless_refined.config.off"));
+                        ? "xmly_endless_refined.config.on"
+                        : "xmly_endless_refined.config.off"));
     }
 }

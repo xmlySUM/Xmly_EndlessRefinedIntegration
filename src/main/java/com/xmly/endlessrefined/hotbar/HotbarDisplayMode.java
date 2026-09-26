@@ -2,19 +2,19 @@ package com.xmly.endlessrefined.hotbar;
 
 public enum HotbarDisplayMode {
 
-    VANILLA_ONLY("endless_refined.display.vanilla_only"),
+    VANILLA_ONLY("xmly_endless_refined.display.vanilla_only"),
 
-    ONE_WINDOWS("endless_refined.display.one_windows"),
+    ONE_WINDOWS("xmly_endless_refined.display.one_windows"),
 
-    TWO_ROWS_COLUMNS("endless_refined.display.two_rows_columns"),
+    TWO_ROWS_COLUMNS("xmly_endless_refined.display.two_rows_columns"),
 
-    ONE_ROW_WINDOWS("endless_refined.display.one_row_windows"),
+    ONE_ROW_WINDOWS("xmly_endless_refined.display.one_row_windows"),
 
-    ONE_COL_WINDOWS("endless_refined.display.one_col_windows"),
+    ONE_COL_WINDOWS("xmly_endless_refined.display.one_col_windows"),
 
-    ROW_COLUMNS_WINDOW("endless_refined.display.row_columns_window"),
+    ROW_COLUMNS_WINDOW("xmly_endless_refined.display.row_columns_window"),
 
-    COLUMN_ROWS_WINDOW("endless_refined.display.column_rows_window");
+    COLUMN_ROWS_WINDOW("xmly_endless_refined.display.column_rows_window");
 
     private final String translationKey;
 

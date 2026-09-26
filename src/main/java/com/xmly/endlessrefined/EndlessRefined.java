@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.Mod;
 @Mod(EndlessRefined.MOD_ID)
 public final class EndlessRefined {
 
-    public static final String MOD_ID = "endless_refined";
+    public static final String MOD_ID = "xmly_endless_refined";
 
     @SuppressWarnings("removal")
     public EndlessRefined() {

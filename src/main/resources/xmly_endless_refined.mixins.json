@@ -4,7 +4,7 @@
   "package": "com.xmly.endlessrefined.mixin",
   "plugin": "com.xmly.endlessrefined.mixin.ERIMixinPlugin",
   "compatibilityLevel": "JAVA_17",
-  "refmap": "endless_refined.refmap.json",
+  "refmap": "xmly_endless_refined.refmap.json",
   "priority": 950,
   "mixins": [
     "endless.ContainerMenuAccessor",

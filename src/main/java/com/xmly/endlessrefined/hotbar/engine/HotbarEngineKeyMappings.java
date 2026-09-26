@@ -25,12 +25,12 @@ import org.lwjgl.glfw.GLFW;
 public final class HotbarEngineKeyMappings {
 
     private static final int FIRST_CUSTOM_SLOT = 9;
-    public static final String CATEGORY = "key.categories.endless_refined";
+    public static final String CATEGORY = "key.categories.xmly_endless_refined";
 
-    public static final KeyMapping OPEN_CONFIG = create("key.endless_refined.open_config");
+    public static final KeyMapping OPEN_CONFIG = create("key.xmly_endless_refined.open_config");
 
     public static final KeyMapping CYCLE_DISPLAY = new KeyMapping(
-            "key.endless_refined.cycle_display",
+            "key.xmly_endless_refined.cycle_display",
             InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_BACKSLASH,
             CATEGORY);
@@ -64,7 +64,7 @@ public final class HotbarEngineKeyMappings {
         KeyMapping[] mappings = new KeyMapping[36 - FIRST_CUSTOM_SLOT];
 
         for (int slot = 0; slot < mappings.length; slot++) {
-            mappings[slot] = create("key.endless_refined.slot." + (FIRST_CUSTOM_SLOT + slot + 1));
+            mappings[slot] = create("key.xmly_endless_refined.slot." + (FIRST_CUSTOM_SLOT + slot + 1));
         }
 
         return mappings;

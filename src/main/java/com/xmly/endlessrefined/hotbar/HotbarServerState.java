@@ -142,14 +142,14 @@ public final class HotbarServerState {
                 if (holding) {
                     // 当前正在使用扩展热栏映射：Ctrl+0 关闭映射，不进入末影箱
                     stop(player);
-                    NetworkHandler.sendToPlayer(player, new HotbarNoticeS2C("endless_refined.notice.hotbar_closed"));
+                    NetworkHandler.sendToPlayer(player, new HotbarNoticeS2C("xmly_endless_refined.notice.hotbar_closed"));
                 } else {
                     // 没有打开热栏映射：才允许切换末影箱，并且必须groups>=2
                     if (clientGroups >= 2) {
                         toggleEnderChest(player);
                     } else {
                         // groups<2，禁止末影箱，提示
-                        NetworkHandler.sendToPlayer(player, new HotbarNoticeS2C("endless_refined.notice.no_groups"));
+                        NetworkHandler.sendToPlayer(player, new HotbarNoticeS2C("xmly_endless_refined.notice.no_groups"));
                     }
                 }
                 // ========== 修复逻辑结束 ==========
@@ -186,11 +186,11 @@ public final class HotbarServerState {
         if (moved) {
             // Worth saying: the items are in Endless rather than gone, and the panel is how
             // they go back on.
-            NetworkHandler.sendToPlayer(player, new HotbarNoticeS2C("endless_refined.notice.displaced"));
+            NetworkHandler.sendToPlayer(player, new HotbarNoticeS2C("xmly_endless_refined.notice.displaced"));
         }
 
         if (table.isEmpty()) {
-            NetworkHandler.sendToPlayer(player, new HotbarNoticeS2C("endless_refined.notice.empty_table"));
+            NetworkHandler.sendToPlayer(player, new HotbarNoticeS2C("xmly_endless_refined.notice.empty_table"));
         }
     }
 
@@ -290,7 +290,7 @@ public final class HotbarServerState {
 
     public void placeOnHotbar(ServerPlayer player, ItemKey key) {
         if (table.place(key) < 0) {
-            NetworkHandler.sendToPlayer(player, new HotbarNoticeS2C("endless_refined.notice.hotbar_full"));
+            NetworkHandler.sendToPlayer(player, new HotbarNoticeS2C("xmly_endless_refined.notice.hotbar_full"));
             return;
         }
 
@@ -429,24 +429,24 @@ public final class HotbarServerState {
     private void toggleEnderChest(ServerPlayer player) {
         // 兜底校验，groups<2直接返回
         if (clientGroups < 2) {
-            NetworkHandler.sendToPlayer(player, new HotbarNoticeS2C("endless_refined.notice.no_groups"));
+            NetworkHandler.sendToPlayer(player, new HotbarNoticeS2C("xmly_endless_refined.notice.no_groups"));
             return;
         }
         if (enderChest) {
             leaveEnderChest(player);
-            NetworkHandler.sendToPlayer(player, new HotbarNoticeS2C("endless_refined.notice.ender_chest_off"));
+            NetworkHandler.sendToPlayer(player, new HotbarNoticeS2C("xmly_endless_refined.notice.ender_chest_off"));
             return;
         }
 
         stop(player);
 
         if (!ERIConfig.ENABLE_ENDER_CHEST_HOTBAR.get()) {
-            NetworkHandler.sendToPlayer(player, new HotbarNoticeS2C("endless_refined.notice.ender_chest_disabled"));
+            NetworkHandler.sendToPlayer(player, new HotbarNoticeS2C("xmly_endless_refined.notice.ender_chest_disabled"));
             return;
         }
 
         enterEnderChest(player);
-        NetworkHandler.sendToPlayer(player, new HotbarNoticeS2C("endless_refined.notice.ender_chest"));
+        NetworkHandler.sendToPlayer(player, new HotbarNoticeS2C("xmly_endless_refined.notice.ender_chest"));
     }
 
     private void enterEnderChest(ServerPlayer player) {

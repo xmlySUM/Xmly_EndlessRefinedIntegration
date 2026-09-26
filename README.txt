@@ -50,7 +50,7 @@ What it does
 
 Where it is configured
 ----------------------
-`config/endless_refined-server.toml`
+`config/xmly_endless_refined-server.toml`
     inventory.sweep            move passively gained items from slots 9-35 to Endless
     inventory.overflow         send items that fit nowhere to Endless
     refined_storage.enabled    the portable grid fallback
