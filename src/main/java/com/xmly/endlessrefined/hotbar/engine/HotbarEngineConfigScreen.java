@@ -36,9 +36,7 @@ public class HotbarEngineConfigScreen extends Screen {
             button.setMessage(wrapMessage());
         }).bounds(x, y + 24, buttonWidth, buttonHeight).build());
 
-        addRenderableWidget(Button.builder(Component.translatable("gui.done"), button -> onClose())
-                .bounds(x, y + 62, buttonWidth, buttonHeight)
-                .build());
+        addRenderableWidget(Button.builder(Component.translatable("gui.done"), button -> onClose()).bounds(x, y + 62, buttonWidth, buttonHeight).build());
     }
 
     @Override
@@ -60,10 +58,6 @@ public class HotbarEngineConfigScreen extends Screen {
     }
 
     private static Component wrapMessage() {
-        return Component.translatable(
-                "xmly_endless_refined.config.wrap_scroll",
-                Component.translatable(HotbarEngineConfig.wrapScroll
-                        ? "xmly_endless_refined.config.on"
-                        : "xmly_endless_refined.config.off"));
+        return Component.translatable("xmly_endless_refined.config.wrap_scroll", Component.translatable(HotbarEngineConfig.wrapScroll ? "xmly_endless_refined.config.on" : "xmly_endless_refined.config.off"));
     }
 }

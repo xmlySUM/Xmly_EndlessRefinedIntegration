@@ -16,7 +16,6 @@ public abstract class NoAttachOnGridMixin {
         if (!cir.getReturnValueZ()) {
             return;
         }
-
         if (screen.getMenu() instanceof GridContainerMenu) {
             cir.setReturnValue(false);
         }

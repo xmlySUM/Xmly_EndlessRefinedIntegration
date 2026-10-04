@@ -153,9 +153,6 @@ public final class EndlessPortableGridStorage implements IStorageDisk<ItemStack>
         return size - (remainder == null || remainder.isEmpty() ? 0 : remainder.getCount());
     }
 
-    /**
-     * @return {@link Integer#MAX_VALUE}: an Endless Inventory has no meaningful cap
-     */
     @Override
     public int getCapacity() {
         return Integer.MAX_VALUE;

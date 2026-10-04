@@ -24,23 +24,20 @@ public abstract class InventoryQuickMoveMixin {
     private ItemStack eri$before = ItemStack.EMPTY;
 
     @Inject(method = "quickMoveStack", at = @At("HEAD"))
-    private void eri$captureSlot(Player pPlayer, int pIndex, CallbackInfoReturnable<ItemStack> cir) {
+    private void eri$captureSlot(Player player, int index, CallbackInfoReturnable<ItemStack> cir) {
         NonNullList<Slot> slots = ((ContainerMenuAccessor) this).eri$slots();
 
-        eri$index = pIndex;
-        eri$before = pIndex >= 0 && pIndex < slots.size() ? slots.get(pIndex).getItem().copy() : ItemStack.EMPTY;
+        eri$index = index;
+        eri$before = index >= 0 && index < slots.size() ? slots.get(index).getItem().copy() : ItemStack.EMPTY;
     }
 
     @Inject(method = "quickMoveStack", at = @At("RETURN"), cancellable = true)
-    private void eri$overflowToEndless(Player pPlayer, int pIndex, CallbackInfoReturnable<ItemStack> cir) {
-        if (!ERIConfig.ENABLE_OVERFLOW.get() || !(pPlayer instanceof ServerPlayer serverPlayer)) {
+    private void eri$overflowToEndless(Player player, int index, CallbackInfoReturnable<ItemStack> cir) {
+        if (!ERIConfig.ENABLE_OVERFLOW.get() || !(player instanceof ServerPlayer serverPlayer)) {
             return;
         }
 
         NonNullList<Slot> slots = ((ContainerMenuAccessor) this).eri$slots();
-
-        // Only the main inventory: the hotbar slots have nowhere further to go, and the
-        // other slots are armour and crafting.
         if (eri$index < 9 || eri$index > 35 || eri$index >= slots.size()) {
             return;
         }

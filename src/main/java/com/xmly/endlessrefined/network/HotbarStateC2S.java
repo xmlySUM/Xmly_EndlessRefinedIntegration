@@ -7,6 +7,7 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
+
 public record HotbarStateC2S(boolean pageKey, int digit, int groups) {
 
     public static void encode(HotbarStateC2S message, FriendlyByteBuf buffer) {
@@ -21,15 +22,12 @@ public record HotbarStateC2S(boolean pageKey, int digit, int groups) {
 
     public static void handle(HotbarStateC2S message, Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
-
         context.enqueueWork(() -> {
             ServerPlayer player = context.getSender();
-
             if (player != null) {
                 HotbarServerState.of(player).apply(player, message.digit(), message.groups(), message.pageKey());
             }
         });
-
         context.setPacketHandled(true);
     }
 }

@@ -1,5 +1,6 @@
 package com.xmly.endlessrefined.hotbar;
 
+
 public enum HotbarDisplayMode {
 
     VANILLA_ONLY("xmly_endless_refined.display.vanilla_only"),
@@ -28,7 +29,6 @@ public enum HotbarDisplayMode {
 
     public HotbarDisplayMode next() {
         HotbarDisplayMode[] modes = values();
-
         return modes[(ordinal() + 1) % modes.length];
     }
 
@@ -56,7 +56,6 @@ public enum HotbarDisplayMode {
     public int windowStart(int activeGroup, int configuredGroups) {
         int height = windowCounts(configuredGroups);
         int lowestStart = Math.max(0, configuredGroups - height);
-
         return Math.max(0, Math.min(activeGroup - (height - 1), lowestStart));
     }
 

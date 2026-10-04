@@ -17,7 +17,6 @@ import net.minecraftforge.energy.IEnergyStorage;
 import javax.annotation.Nullable;
 
 public final class RefinedStorageCompat {
-
     private RefinedStorageCompat() {
     }
 
@@ -33,13 +32,10 @@ public final class RefinedStorageCompat {
         if (!isFallbackAllowed(grid)) {
             return false;
         }
-
         Player player = grid.getPlayer();
-
         if (player == null || player.level().isClientSide) {
             return false;
         }
-
         return EndlessBridge.forPlayer(player) != null;
     }
 
@@ -47,17 +43,13 @@ public final class RefinedStorageCompat {
         if (!RS.SERVER_CONFIG.getPortableGrid().getUseEnergy()) {
             return false;
         }
-
         ItemStack stack = grid.getStack();
-
         if (!(stack.getItem() instanceof PortableGridBlockItem portableGrid)) {
             return true;
         }
-
         if (portableGrid.getType() == PortableGridBlockItem.Type.CREATIVE) {
             return false;
         }
-
         return stack.getCapability(ForgeCapabilities.ENERGY, null).map(IEnergyStorage::getEnergyStored).map(stored -> stored <= RS.SERVER_CONFIG.getPortableGrid().getOpenUsage()).orElse(true);
     }
 
@@ -71,9 +63,7 @@ public final class RefinedStorageCompat {
         if (!isFallbackAllowed(grid)) {
             return null;
         }
-
         IStorageCache<ItemStack> cache = new PortableItemStorageCache(grid);
-
         cache.invalidate(InvalidateCause.DISK_INVENTORY_CHANGED);
         return cache;
     }

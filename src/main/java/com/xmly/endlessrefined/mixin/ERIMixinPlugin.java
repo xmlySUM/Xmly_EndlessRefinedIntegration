@@ -30,7 +30,6 @@ public final class ERIMixinPlugin implements IMixinConfigPlugin {
         if (mixinClassName.contains(PKG_REFINED_STORAGE)) {
             return isModLoaded(MOD_REFINED_STORAGE);
         }
-
         return true;
     }
 
@@ -51,15 +50,14 @@ public final class ERIMixinPlugin implements IMixinConfigPlugin {
     public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
     }
 
+
     private static boolean isModLoaded(String modId) {
         LoadingModList loadingModList = FMLLoader.getLoadingModList();
 
         if (loadingModList != null && loadingModList.getModFileById(modId) != null) {
             return true;
         }
-
         ModList modList = ModList.get();
-
         return modList != null && modList.isLoaded(modId);
     }
 }

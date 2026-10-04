@@ -16,11 +16,9 @@ import java.util.List;
 import java.util.Map;
 
 public final class EndlessBridge {
-
     private static final org.slf4j.Logger LOGGER = LogUtils.getLogger();
     private static final int TRACE_FIRST = 20;
     private static final int TRACE_EVERY = 200;
-
     private static int tracedKeys = 0;
 
     private EndlessBridge() {
@@ -31,17 +29,12 @@ public final class EndlessBridge {
         if (player == null || player.level().isClientSide) {
             return null;
         }
-
         if (!Compat.hasEndlessInventory()) {
             return null;
         }
-
-        // Set on LevelEvent.Load for the overworld. Touching it before a level has
-        // loaded would be a null dereference, so this guards early calls.
         if (ServerLevelEndInv.levelEndInvData == null) {
             return null;
         }
-
         return ServerLevelEndInv.getEndInvForPlayer(player).orElse(null);
     }
 
@@ -51,19 +44,14 @@ public final class EndlessBridge {
 
     public static int countIn(Map<ItemKey, ItemState> snapshot, ItemKey key) {
         var state = snapshot.get(key);
-
         if (state != null) {
             return state.count();
         }
-
         ItemKey normalised = normaliseKey(key);
-
         if (normalised == null) {
             return 0;
         }
-
         state = snapshot.get(normalised);
-
         return state == null ? 0 : state.count();
     }
 
@@ -71,33 +59,24 @@ public final class EndlessBridge {
         if (size <= 0) {
             return 0;
         }
-
         int original = availableCount(endInv, key);
         int max = endInv.getMaxItemStackSize();
-
         if (original >= max) {
-            // At the cap: infinity mode keeps the pool as-is but still takes the items,
-            // otherwise there is no room at all.
             return endInv.isInfinityMode() ? size : 0;
         }
-
         long increased = (long) original + size;
         long accepted = Math.min(increased, max) - original;
-
         return (int) Math.max(0L, Math.min((long) size, accepted));
     }
 
     public static int storedTotal(EndlessInventory endInv) {
         long total = 0L;
-
         for (var state : endInv.snapshotItemMap().values()) {
             total += state.count();
-
             if (total >= Integer.MAX_VALUE) {
                 return Integer.MAX_VALUE;
             }
         }
-
         return (int) total;
     }
 
@@ -105,13 +84,10 @@ public final class EndlessBridge {
         if (stack.isEmpty()) {
             return ItemStack.EMPTY;
         }
-
         EndlessInventory endInv = forPlayer(player);
-
         if (endInv == null) {
             return stack.copy();
         }
-
         return endInv.addItem(ItemKey.asKey(stack), stack.getCount());
     }
 
@@ -119,30 +95,23 @@ public final class EndlessBridge {
         if (count <= 0 || key.isEmpty()) {
             return ItemStack.EMPTY;
         }
-
         return key.toStack(count);
     }
-
 
     @Nullable
     private static ItemKey normaliseKey(ItemKey key) {
         CompoundTag tag = key.tag();
-
         if (tag == null) {
             return new ItemKey(key.item(), new CompoundTag());
         }
-
         if (tag.isEmpty()) {
             return new ItemKey(key.item(), null);
         }
-
         return null;
     }
 
-
     public static List<ItemStack> stockItems(@Nullable Player player) {
         EndlessInventory endInv = forPlayer(player);
-
         return endInv == null ? List.of() : endInv.getItemsAsList();
     }
 
@@ -150,9 +119,7 @@ public final class EndlessBridge {
         if (!ERIConfig.TRACE_NBT.get()) {
             return;
         }
-
         int call = ++tracedKeys;
-
         if (key.tag() != null && !key.tag().isEmpty()) {
             LOGGER.info("[ERI nbt] {} #{} TAGGED item={} tag={}", where, call, key.item(), key.tag());
         } else if (call <= TRACE_FIRST || call % TRACE_EVERY == 0) {
@@ -170,15 +137,12 @@ public final class EndlessBridge {
         if (!ERIConfig.TRACE_NBT.get()) {
             return;
         }
-
         int withTag = 0;
-
         for (ItemStack stack : stacks) {
             if (stack.getTag() != null) {
                 withTag++;
             }
         }
-
         LOGGER.info("[ERI nbt] {} {} stacks, {} carrying a tag", where, stacks.size(), withTag);
     }
 }

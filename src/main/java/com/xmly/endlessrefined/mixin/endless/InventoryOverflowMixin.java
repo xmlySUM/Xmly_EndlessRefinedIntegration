@@ -18,61 +18,48 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Inventory.class)
 public abstract class InventoryOverflowMixin {
-
     @Shadow
     @Final
     public Player player;
-
     @Unique
     private ItemStack eri$offered = ItemStack.EMPTY;
 
     @Inject(method = "add(Lnet/minecraft/world/item/ItemStack;)Z", at = @At("HEAD"))
-    private void eri$captureOffered(ItemStack pStack, CallbackInfoReturnable<Boolean> cir) {
+    private void eri$captureOffered(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
         if (this.player instanceof ServerPlayer) {
-            eri$offered = pStack.copy();
+            eri$offered = stack.copy();
         }
     }
 
     @Inject(method = "add(Lnet/minecraft/world/item/ItemStack;)Z", at = @At("RETURN"), cancellable = true)
-    private void eri$endlessOverflow(ItemStack pStack, CallbackInfoReturnable<Boolean> cir) {
+    private void eri$endlessOverflow(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
         if (!(this.player instanceof ServerPlayer serverPlayer) || this.player instanceof FakePlayer) {
             return;
         }
-
         ItemStack offered = eri$offered;
         eri$offered = ItemStack.EMPTY;
-
         if (offered.isEmpty()) {
             return;
         }
-
         if (cir.getReturnValueZ()) {
             if (!ERIConfig.ENABLE_SWEEP.get()) {
                 return;
             }
-
-            int added = offered.getCount() - pStack.getCount();
-
+            int added = offered.getCount() - stack.getCount();
             if (added > 0) {
                 InventoryTransfer.moveExtendedToEndless(serverPlayer, offered, added);
             }
-
             return;
         }
-
-        if (!ERIConfig.ENABLE_OVERFLOW.get() || pStack.isEmpty()) {
+        if (!ERIConfig.ENABLE_OVERFLOW.get() || stack.isEmpty()) {
             return;
         }
-
-        ItemStack remainder = EndlessBridge.insert(serverPlayer, pStack);
-        int stored = pStack.getCount() - remainder.getCount();
-
+        ItemStack remainder = EndlessBridge.insert(serverPlayer, stack);
+        int stored = stack.getCount() - remainder.getCount();
         if (stored <= 0) {
             return;
         }
-
-        pStack.shrink(stored);
-
+        stack.shrink(stored);
         cir.setReturnValue(true);
     }
 }

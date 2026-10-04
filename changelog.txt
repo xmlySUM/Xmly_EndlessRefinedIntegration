@@ -32,3 +32,13 @@ Hotbar
 Forked from QuadHotbar
  - The multi-group hotbar is a fork of QuadHotbar, which the two mods cannot share; see
    THIRD-PARTY.md. Installing both is refused with an explanation.
+
+1.0.1-alpha
+-----
+Fix bugs.
+
+Endless Inventory
+ - A dedicated server no longer crashes when Endless Inventory checks whether a menu can be
+   attached to. That check named a client-only menu class from common code, and a server does not
+   have that class at all, so every packet that opens the panel took the server down with it -
+   pressing the panel key, or simply opening a container that Endless would attach to.

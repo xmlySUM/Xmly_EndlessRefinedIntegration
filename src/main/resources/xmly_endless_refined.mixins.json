@@ -17,7 +17,8 @@
     "endless.ItemStackLikeNbtMixin",
     "hotbar.InventoryMixin",
     "hotbar.ServerGamePacketListenerImplMixin",
-    "refinedstorage.PortableGridMixin"
+    "refinedstorage.PortableGridMixin",
+    "endless.MenuAttachingConfigMixin"
   ],
   "client": [
     "endless.ItemPageQuickMoveMixin",

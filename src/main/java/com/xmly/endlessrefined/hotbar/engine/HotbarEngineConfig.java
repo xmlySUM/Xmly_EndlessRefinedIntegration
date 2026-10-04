@@ -10,13 +10,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 
-/**
- * Client settings of the hotbar engine.
- *
- * <p>{@link #hotbarGroups} is the number of groups of nine slots the engine can move
- * the selection across. It replaces QuadHotbar's {@code hotbarRows}, which meant both
- * this and "how many rows to draw" — see {@link HotbarDisplayMode} for the split.
- */
 @Mod.EventBusSubscriber(modid = EndlessRefined.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class HotbarEngineConfig {
 
@@ -75,7 +68,6 @@ public final class HotbarEngineConfig {
         SPEC.save();
     }
 
-    /** Remembers where the panel was dragged to. */
     public static void setPanelPosition(int x, int y) {
         PANEL_X.set(x);
         PANEL_Y.set(y);

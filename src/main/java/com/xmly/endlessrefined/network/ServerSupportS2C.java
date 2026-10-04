@@ -13,7 +13,6 @@ import net.minecraftforge.network.NetworkEvent;
 import java.util.function.Supplier;
 
 public record ServerSupportS2C(int selectedSlot) {
-
     public static void encode(ServerSupportS2C message, FriendlyByteBuf buffer) {
         buffer.writeVarInt(message.selectedSlot());
     }
@@ -24,11 +23,7 @@ public record ServerSupportS2C(int selectedSlot) {
 
     public static void handle(ServerSupportS2C message, Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
-
-        context.enqueueWork(() -> DistExecutor.unsafeRunWhenOn(
-                Dist.CLIENT,
-                () -> () -> HotbarEngineClientEvents.syncServerSelectedSlot(message.selectedSlot())));
-
+        context.enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> HotbarEngineClientEvents.syncServerSelectedSlot(message.selectedSlot())));
         context.setPacketHandled(true);
     }
 }

@@ -20,15 +20,12 @@ public record HotbarCellPlaceC2S(ItemKey key) {
 
     public static void handle(HotbarCellPlaceC2S message, Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
-
         context.enqueueWork(() -> {
             ServerPlayer player = context.getSender();
-
             if (player != null) {
                 HotbarServerState.of(player).placeOnHotbar(player, message.key());
             }
         });
-
         context.setPacketHandled(true);
     }
 }

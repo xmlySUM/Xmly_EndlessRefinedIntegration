@@ -20,11 +20,7 @@ public record HotbarNoticeS2C(String translationKey) {
 
     public static void handle(HotbarNoticeS2C message, Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
-
-        context.enqueueWork(() -> DistExecutor.unsafeRunWhenOn(
-                Dist.CLIENT,
-                () -> () -> HotbarEngineClientEvents.showNotice(message.translationKey())));
-
+        context.enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> HotbarEngineClientEvents.showNotice(message.translationKey())));
         context.setPacketHandled(true);
     }
 }

@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class HotbarPanelState {
-
     private static List<ItemStack> cells = emptyCells();
 
     private HotbarPanelState() {
@@ -32,11 +31,9 @@ public final class HotbarPanelState {
 
     private static List<ItemStack> emptyCells() {
         List<ItemStack> empty = new ArrayList<>(HotbarTable.CELLS);
-
         for (int i = 0; i < HotbarTable.CELLS; i++) {
             empty.add(ItemStack.EMPTY);
         }
-
         return empty;
     }
 }

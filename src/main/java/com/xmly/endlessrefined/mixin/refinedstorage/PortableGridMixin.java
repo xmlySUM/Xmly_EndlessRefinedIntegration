@@ -15,13 +15,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import javax.annotation.Nullable;
 
 @Mixin(PortableGrid.class)
-@SuppressWarnings({"rawtypes", "unchecked"})
+@SuppressWarnings({"rawtypes"})
 public abstract class PortableGridMixin {
-
     @Unique
     @Nullable
     private IStorageDisk<ItemStack> eri$storage;
-
     @Unique
     @Nullable
     private IStorageCache<ItemStack> eri$cache;
@@ -37,7 +35,6 @@ public abstract class PortableGridMixin {
         if (eri$storage == null) {
             eri$storage = RefinedStorageCompat.createStorage(eri$self());
         }
-
         return eri$storage;
     }
 
@@ -45,11 +42,8 @@ public abstract class PortableGridMixin {
     @Nullable
     private IStorageCache<ItemStack> eri$fallbackCache() {
         if (eri$cache == null) {
-            // Building the cache invalidates it, which reads getItemStorage() and so
-            // materialises the fallback storage through the getStorage patch below.
             eri$cache = RefinedStorageCompat.createCache(eri$self());
         }
-
         return eri$cache;
     }
 
@@ -58,9 +52,7 @@ public abstract class PortableGridMixin {
         if (cir.getReturnValue() != null) {
             return;
         }
-
         IStorageDisk<ItemStack> fallback = eri$fallbackStorage();
-
         if (fallback != null) {
             cir.setReturnValue(fallback);
         }
@@ -71,9 +63,7 @@ public abstract class PortableGridMixin {
         if (cir.getReturnValue() != null) {
             return;
         }
-
         IStorageCache<ItemStack> fallback = eri$fallbackCache();
-
         if (fallback != null) {
             cir.setReturnValue(fallback);
         }
@@ -84,9 +74,7 @@ public abstract class PortableGridMixin {
         if (cir.getReturnValue() != null) {
             return;
         }
-
         IStorageCache<ItemStack> fallback = eri$fallbackCache();
-
         if (fallback != null) {
             cir.setReturnValue(fallback);
         }
@@ -97,15 +85,10 @@ public abstract class PortableGridMixin {
         if (cir.getReturnValueZ()) {
             return;
         }
-
         PortableGrid self = eri$self();
-
-        // The original returns false for two unrelated reasons. Only the missing-disk
-        // one is ours to override; an empty battery must stay an empty battery.
         if (!ERIConfig.RS_IGNORE_ENERGY.get() && RefinedStorageCompat.isEnergyBlocked(self)) {
             return;
         }
-
         if (RefinedStorageCompat.isFallbackAllowed(self)) {
             cir.setReturnValue(true);
         }

@@ -19,15 +19,12 @@ public record HotbarCellClearC2S(int cell) {
 
     public static void handle(HotbarCellClearC2S message, Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
-
         context.enqueueWork(() -> {
             ServerPlayer player = context.getSender();
-
             if (player != null) {
                 HotbarServerState.of(player).clearCell(player, message.cell());
             }
         });
-
         context.setPacketHandled(true);
     }
 }

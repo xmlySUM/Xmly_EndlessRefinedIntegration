@@ -89,7 +89,6 @@ public final class HotbarPanel {
             NetworkHandler.sendToServer(new HotbarCellClearC2S(cell));
         }
 
-        // Swallowed either way: a click inside the panel is the panel's, not a slot's.
         event.setCanceled(true);
     }
 

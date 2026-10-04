@@ -22,16 +22,12 @@ public abstract class ItemClickPlaceMixin {
         }
 
         HotbarServerState state = HotbarServerState.of(player);
-
-        // Shift-clicking an item with the panel open means "put this on my hotbar".
         if (payload.clickType() == ClickType.QUICK_MOVE && !payload.key().isEmpty() && state.isPanelExpanded()) {
             state.placeOnHotbar(player, payload.key());
             ci.cancel();
             return;
         }
 
-        // Clicking while carrying a stack hands it to Endless. If that stack came off the
-        // hotbar, its cell goes with it, so the slot is not quietly filled again later.
         if (payload.clickType() == ClickType.PICKUP && !player.containerMenu.getCarried().isEmpty()) {
             state.onReturnedToEndless(player, player.containerMenu.getCarried());
         }
