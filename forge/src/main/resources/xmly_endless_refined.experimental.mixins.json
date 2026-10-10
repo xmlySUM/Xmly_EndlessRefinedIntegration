@@ -1,0 +1,10 @@
+{
+  "required": false,
+  "minVersion": "0.7",
+  "package": "com.kwwsyk.endinv.forge.integrates.jei.experimental.mixin",
+  "plugin": "com.kwwsyk.endinv.forge.integrates.jei.experimental.mixin.MixinPlugin",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+    "BasicRecipeTransferHandlerMixin"
+  ]
+}

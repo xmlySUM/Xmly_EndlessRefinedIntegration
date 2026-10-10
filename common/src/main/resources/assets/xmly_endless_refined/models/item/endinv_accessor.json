@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "xmly_endless_refined:item/endinv_accessor"
+  }
+}

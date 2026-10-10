@@ -1,8 +1,65 @@
+# eclipse
+bin
+*.launch
+.settings
+.metadata
+.classpath
+.project
+
+# idea
+out
+*.ipr
+*.iws
+*.iml
 .idea
-.gradle
+
+# gradle
 build
-gradle
-gradlew
-gradlew.bat
-settings.gradle
-libs/*
+.gradle
+
+# other
+eclipse
+run
+runs
+run-data
+
+repo
+/forge/runModpack/
+/forge/runModpack/config/
+/forge/runModpack/mods/
+/forge/runModpack/saves/
+/shots/
+
+# Refined Storage, which this branch integrates with but does not ship. Not on any maven this
+# build can reach, so the jar is kept here by hand. A clone without it still builds: the build
+# leaves the compat sources out and drops their entries from the mixin config to match.
+/forge/libs/
+
+# ---------------------------------------------------------------------------------------------
+# Not part of this branch
+#
+# This branch is the 2.0 line of Endless Inventory: Refined Integration. It got here by taking
+# Endless Inventory's sources and folding the addon into them, and it is published as its own
+# project rather than as a fork of the mod it grew out of. What follows came along with those
+# sources and has no part in this one.
+#
+# Being listed here does not untrack a file that is already in the repository - these arrived in
+# the history. Run `git rm -r --cached <path>` for each one before publishing.
+# ---------------------------------------------------------------------------------------------
+
+# The Fabric module of Endless Inventory. Not built on this branch; settings.gradle does not
+# include it.
+/fabric/
+
+# Endless Inventory's NeoForge module, left over from the 1.21 line and out of step with the
+# sources here.
+/neoforge/
+
+# Screenshots from Endless Inventory's readme.
+/gallery/
+
+# The addon as it was before it was folded in. Its sources now live under common/ and forge/.
+/Xmly_EndlessRefinedIntegration/
+
+# The Forge MDK's placeholder licence, which this project does not use.
+/TEMPLATE_LICENSE.txt

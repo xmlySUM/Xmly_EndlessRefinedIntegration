@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "xmly_endless_refined:item/endinv_accessor"
+  }
+}

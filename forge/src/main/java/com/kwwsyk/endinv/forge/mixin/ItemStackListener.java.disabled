@@ -1,0 +1,52 @@
+package com.kwwsyk.endinv.forge.mixin;
+
+import com.kwwsyk.endinv.common.util.Debugger;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+@Mixin(ItemStack.class)
+public class ItemStackListener {
+
+    @Shadow
+    @org.jetbrains.annotations.Nullable private net.minecraft.nbt.CompoundTag tag;
+    @Unique
+    private static final ThreadLocal<Boolean> WAS_NULL = ThreadLocal.withInitial(() -> false);
+
+    // 进入 getOrCreateTag 之前，记录是否为 null
+    @Inject(method = "getOrCreateTag", at = @At("HEAD"))
+    private void Debugger$headGetOrCreateTag(CallbackInfoReturnable<CompoundTag> cir) {
+        WAS_NULL.set(this.tag == null);
+    }
+
+    // 返回后：若原本为 null，且现在返回的 NBT 为空 => 记录
+    @Inject(method = "getOrCreateTag", at = @At("RETURN"))
+    private void Debugger$afterGetOrCreateTag(CallbackInfoReturnable<net.minecraft.nbt.CompoundTag> cir) {
+        var self = (net.minecraft.world.item.ItemStack)(Object)this;
+        try {
+            if (Debugger.isWorkbenchB(self) && Boolean.TRUE.equals(WAS_NULL.get())) {
+                var ret = cir.getReturnValue();
+                if (ret != null && ret.isEmpty()) {
+                    Debugger.log("getOrCreateTag(): null -> {} on " + self);
+                }
+            }
+        } finally {
+            WAS_NULL.remove();
+        }
+    }
+
+    // setTag(…)：若旧值为 null，新写入为空 {} => 记录
+    @Inject(method = "setTag", at = @At("HEAD"))
+    private void Debugger$headSetTag(CompoundTag p_41752_, CallbackInfo ci) {
+        var self = (net.minecraft.world.item.ItemStack)(Object)this;
+        if (Debugger.isWorkbenchB(self) && this.tag == null && p_41752_ != null && p_41752_.isEmpty()) {
+            Debugger.log("setTag({}): null -> {} on " + self);
+        }
+    }
+}

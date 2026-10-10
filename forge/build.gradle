@@ -1,0 +1,238 @@
+buildscript {
+    repositories {
+        // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
+        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
+    }
+}
+
+plugins {
+    id 'net.minecraftforge.gradle' version '[6.0.16, 6.2)'
+    id 'idea'
+    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
+}
+
+apply plugin: 'org.spongepowered.mixin'
+
+base {
+    // Named after the mod id rather than the display name, so the file name carries no spaces.
+    archivesName = "${mod_id}-forge-${minecraft_version}-${mod_sub_version_forge}"
+}
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(17)
+}
+
+mixin {
+    add(sourceSets.main, "${mod_id}.refmap.json")
+
+    config("${mod_id}.mixins.json")
+    config("${mod_id}.experimental.mixins.json")
+}
+
+// MixinGradle merges the annotation processor's mapping file into the reobfuscation mappings, which
+// is what renames @Shadow fields to their SRG names in the built jar. Left alone it runs before
+// compileJava, finds no mapping file yet, and silently skips the merge ("Tsrg file not found,
+// skipping"): the jar is then built with shadow fields still under their source names and every
+// @Inject target un-remapped, which fails at run time rather than at build time. Ordering it after
+// the compile is what makes the merge happen.
+tasks.matching { it.name == 'configureReobfTaskForReobfJar' || it.name == 'configureReobfTaskForReobfJarJar' }
+        .configureEach { mustRunAfter(tasks.named('compileJava')) }
+
+minecraft {
+    mappings channel: "parchment", version: "2023.09.03-1.20.1"
+
+    copyIdeResources = true
+
+    runs {
+        client {
+            // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
+            property 'forge.enabledGameTestNamespaces', mod_id
+
+            // remapRefMap tells Mixin to translate the refmap through this file. Without the file
+            // the refmap cannot be read at all ("No refMap loaded"), every @Shadow then looks for a
+            // field by a name that the dev classes do not have, and the mixin fails to apply. The
+            // file is produced by the createSrgToMcp task.
+            jvmArgs "-Dmixin.env.remapRefMap=true",
+                    "-Dmixin.env.refMapRemappingFile=${projectDir}/build/createSrgToMcp/output.srg",
+                    "-Dmixin.debug.verbose=true"
+        }
+        data {
+            workingDirectory project.file('run-data')
+
+            // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
+            args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')        }
+        server {
+            jvmArgs "-Dmixin.env.remapRefMap=true",
+                    "-Dmixin.env.refMapRemappingFile=${projectDir}/build/createSrgToMcp/output.srg"
+        }
+        configureEach {
+            workingDirectory project.file('run')
+
+             mods {
+                "${mod_id}" {
+                    source(sourceSets.main)
+                    source(project(":common").sourceSets.main)
+                }
+                //jvmArg '--add-opens=java.base/java.lang.ref=ALL-UNNAMED'
+            }
+        }
+    }
+}
+
+sourceSets.main.resources.srcDir 'src/generated/resources'
+
+repositories {
+    maven { url = 'https://maven.parchmentmc.org' }
+    maven {
+        // location of the maven that hosts JEI files before January 2023
+        name = "Progwml6's maven"
+        url = "https://dvs1.progwml6.com/files/maven/"
+    }
+    maven {
+        // location of the maven that hosts JEI files since January 2023
+        name = "Jared's maven"
+        url = "https://maven.blamejared.com/"
+    }
+    maven {
+        // location of a maven mirror for JEI files, as a fallback
+        name = "ModMaven"
+        url = "https://modmaven.dev"
+    }
+    maven {
+        // Add curse maven to repositories
+        name = "Curse Maven"
+        url = "https://www.cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
+    maven {
+        name = "Curios"
+        url = uri("https://maven.theillusivec4.top/")
+    }
+    maven {
+        name = "Cloth Config"
+        url = uri("https://maven.shedaniel.me/")
+    }
+}
+
+// Refined Storage is an optional integration, and it is not on any maven this build can reach:
+// its jar is kept in forge/libs, which is ignored, so a fresh clone has no copy of it. When it is
+// missing the compat sources are left out of the build rather than failing it, and the mixin
+// config drops their entries to match - a mixin whose class is not in the jar would otherwise stop
+// the game at startup.
+def refinedStorageJar = file('libs/refinedstorage-1.12.4.jar')
+
+sourceSets {
+    main {
+        if (!refinedStorageJar.exists()) {
+            java.exclude 'com/kwwsyk/endinv/forge/integrates/refinedstorage/**'
+            java.exclude 'com/kwwsyk/endinv/forge/mixin/refinedstorage/**'
+        }
+    }
+}
+
+dependencies {
+    implementation project(":common")
+
+    implementation 'org.jetbrains:annotations:24.0.1'
+
+    annotationProcessor("org.spongepowered:mixin:0.8.7:processor")
+
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+
+    /* other minecraft dependencies are here */
+    compileOnly("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
+    // at runtime, use the full JEI jar for Forge
+    implementation(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
+
+    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curio_version}")
+    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curio_version}:api")
+
+    if (refinedStorageJar.exists()) {
+        // compileOnly keeps it off the dev runtime: the compat classes are only ever reached
+        // through mixins that EndInvMixinPlugin skips when Refined Storage is absent. Switch this
+        // to `implementation` to test the integration in a dev run.
+        compileOnly fg.deobf(files(refinedStorageJar))
+    }
+
+    //runtimeOnly fg.deobf(files("run/fgdeobf/artifacts-forge-9.5.16.jar"))
+
+    //implementation fg.deobf("curse.maven:timeless-and-classics-zero-1028108:6632240-sources-6633203")
+
+    implementation fg.deobf("me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}")
+}
+
+processResources {
+    inputs.property('refinedStoragePresent', refinedStorageJar.exists())
+
+
+    var expandProps = [
+            'version'                      : mod_sub_version_forge,
+            'group'                        : project.group, //Else we target the task's group.
+            'minecraft_version'            : minecraft_version,
+            'minecraft_version_range'      : minecraft_version_range,
+            'fabric_version'               : fabric_version,
+            'fabric_loader_version'        : fabric_loader_version,
+            'mod_name'                     : mod_name,
+            'mod_author'                   : mod_authors,
+            'mod_id'                       : mod_id,
+            'license'                      : mod_license,
+            'description'                  : mod_description,
+            "forge_version"                :        forge_version,
+            "forge_loader_version_range"   : forge_loader_version_range,
+            'credits'                      : credits,
+            'java_version'                 : java_version
+    ]
+
+    var jsonExpandProps = expandProps.collectEntries {
+        key, value -> [(key): value instanceof String ? value.replace("\n", "\\\\n") : value]
+    }
+
+    filesMatching(['META-INF/mods.toml']) {
+        expand expandProps
+    }
+
+    filesMatching(['pack.mcmeta', 'fabric.mod.json', '*.mixins.json']) {
+        expand jsonExpandProps
+    }
+
+    inputs.properties(expandProps)
+}
+
+
+// Leaving the Refined Storage mixins out of the packaged config when their classes were left out
+// of the build: a mixin whose class is not in the jar stops the game at startup.
+tasks.named('processResources') {
+    // processResources writes here, and a task closure has no project properties of its own.
+    def mixinConfig = new File(project.sourceSets.main.output.resourcesDir, 'xmly_endless_refined.mixins.json')
+
+    doLast {
+        if (refinedStorageJar.exists()) {
+            return
+        }
+        def config = mixinConfig
+        def json = new groovy.json.JsonSlurper().parseText(config.getText('UTF-8'))
+        json.mixins = json.mixins.findAll { !it.toString().startsWith('refinedstorage.') }
+        if (json.client) {
+            json.client = json.client.findAll { !it.toString().startsWith('refinedstorage.') }
+        }
+        config.setText(groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(json)), 'UTF-8')
+    }
+}
+
+jar {
+    finalizedBy('reobfJar')
+    from(project(':common').sourceSets.main.output)
+    manifest.attributes([
+            "MixinConfigs": "${mod_id}.mixins.json,${mod_id}.experimental.mixins.json"
+    ])
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+}

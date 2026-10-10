@@ -1,0 +1,21 @@
+{
+  "required": true,
+  "minVersion": "0.7",
+  "refmap": "xmly_endless_refined.refmap.json",
+  "package": "com.kwwsyk.endinv.forge.mixin",
+  "plugin": "com.kwwsyk.endinv.forge.mixin.EndInvMixinPlugin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "ServerPlaceRecipeMixin",
+    "hotbar.InventoryOverflowMixin",
+    "hotbar.InventoryQuickMoveMixin",
+    "hotbar.InventoryDropGuardMixin",
+    "hotbar.engine.InventoryMixin",
+    "hotbar.engine.ServerGamePacketListenerImplMixin",
+    "refinedstorage.PortableGridMixin"
+  ],
+  "client": [
+    "RecipeBookComponentMixin",
+    "refinedstorage.NoAttachOnGridMixin"
+  ]
+}
